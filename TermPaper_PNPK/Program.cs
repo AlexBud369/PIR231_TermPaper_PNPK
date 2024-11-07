@@ -10,6 +10,7 @@ namespace TermPaper_PNPK
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Test commit");
         }
     }
 }
