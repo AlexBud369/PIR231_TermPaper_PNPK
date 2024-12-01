@@ -36,10 +36,10 @@ namespace TermPaper_PNPK
             public string title;
             public string genre;
             public string publisher;
-            public int year;
-            public int volumeCount;
+            public string year;
+            public string volumeCount;
             public string acquisitionMethod;
-            public decimal price;
+            public string price;
             public string readerFullName;
             public string notes;
         }
@@ -76,10 +76,10 @@ namespace TermPaper_PNPK
                     title = fields[2],
                     genre = fields[3],
                     publisher = fields[4],
-                    year = int.Parse(fields[5]),
-                    volumeCount = int.Parse(fields[6]),
+                    year = fields[5],
+                    volumeCount = fields[6],
                     acquisitionMethod = fields[7],
-                    price = decimal.Parse(fields[8]),
+                    price = fields[8],
                     readerFullName = fields[9],
                     notes = fields[10]
                 };
@@ -98,7 +98,7 @@ namespace TermPaper_PNPK
             }
         }
 
-        public static Genre[] LoadGenres()
+         static Genre[] LoadGenres()
         {
             string[] lines = File.ReadAllLines(GenresFilePath);
             Genre[] genres = new Genre[lines.Length];
@@ -109,18 +109,12 @@ namespace TermPaper_PNPK
             return genres;
         }
 
-        public static void SaveGenres(Genre[] genres)
+        static void SaveGenres(Genre[] genres)
         {
-            using (StreamWriter writer = new StreamWriter(GenresFilePath))
-            {
-                foreach (var genre in genres)
-                {
-                    writer.WriteLine(genre.genreName);
-                }
-            }
+            File.WriteAllLines(GenresFilePath, genres.Select(g => g.genreName));
         }
 
-        public static Publisher[] LoadPublishers()
+        static Publisher[] LoadPublishers()
         {
             string[] lines = File.ReadAllLines(PublishersFilePath);
             Publisher[] publishers = new Publisher[lines.Length];
@@ -173,7 +167,12 @@ namespace TermPaper_PNPK
 
     static void TextOutput(string text)        
         {
-            Console.Write(text);
+            Console.WriteLine(text);
+        }
+
+        static void ClearMenu() 
+        { 
+            Console.Clear();
         }
 
         static void MenuTextOutput()
@@ -186,26 +185,30 @@ namespace TermPaper_PNPK
             TextOutput("Нажмите 5 для выхода");
         }
 
-        static void Menu(Book[] books, Genre[] genres, Publisher[] publishers, AcquisitionMethod[] acquisitionMethods)
+        static void Menu(Book[] books, Genre[] genres, Publisher[] publishers, AcquisitionMethod[] acquisitionMethod)
         {
             MenuTextOutput();
-            int menuItem = GetIntPositiveDigit(@"^[1-5]$");
+            int menuItem = GetIntPositiveDigit(@"^[1-5]$", "Введена не существующая операция. Введите заново. ");
 
 
 
             switch (menuItem)
             {
                 case 1:
-                    HandleBooks(books, genres, acquisitionMethods);
+                    ClearMenu();
+                    HandleBooks(books, genres, acquisitionMethod);
                     break;
                 case 2:
-                    HandleGenres();
+                    ClearMenu();
+                    HandleGenres(genres);
                     break;
                 case 3:
-                    HandlePublishers();
+                    ClearMenu();
+                    HandlePublishers(publishers);
                     break;
                 case 4:
-                    HandleAcquisitionMethods();
+                    ClearMenu();
+                    HandleAcquisitionMethods(acquisitionMethod);
                     break;
                 case 5:
                     ProgramExitMethod();
@@ -229,12 +232,13 @@ namespace TermPaper_PNPK
                 Console.WriteLine("3. Редактировать книгу");
                 Console.WriteLine("4. Вернуться в главное меню");
 
-                int choice = GetIntPositiveDigit(@"^[1-4]$");
+                int choice = GetIntPositiveDigit(@"^[1-4]$", "Введена не существующая операция. Введите заново. ");
 
                 switch (choice)
                 {
                     case 1:
                         AddBook(books, genres, acequisitationMethods);
+                        ClearMenu();
                         break;
                     case 2:
                         DeleteBook();
@@ -251,7 +255,7 @@ namespace TermPaper_PNPK
             }
         }
 
-        static void HandleGenres()
+        static void HandleGenres(Genre[] genres)
         {
             while (true)
             {
@@ -261,18 +265,22 @@ namespace TermPaper_PNPK
                 Console.WriteLine("3. Редактировать жанр");
                 Console.WriteLine("4. Вернуться в главное меню");
 
-                int choice = GetIntPositiveDigit(@"^[1-4]$");
+                int choice = GetIntPositiveDigit(@"^[1-4]$", "Введена не существующая операция. Введите заново. ");
 
                 switch (choice)
                 {
                     case 1:
-                        AddGenre();
+                        
+                        AddGenre(genres);
+                        
                         break;
                     case 2:
-                        DeleteGenre();
+                        ClearMenu();
+                        DeleteGenre(genres);
                         break;
                     case 3:
-                        UpdateGenre();
+                        ClearMenu();
+                        UpdateGenre(genres);
                         break;
                     case 4:
                         return;
@@ -283,7 +291,7 @@ namespace TermPaper_PNPK
             }
         }
 
-        static void HandlePublishers()
+        static void HandlePublishers(Publisher[] publishers)
         {
             while (true)
             {
@@ -293,18 +301,18 @@ namespace TermPaper_PNPK
                 Console.WriteLine("3. Редактировать издательство");
                 Console.WriteLine("4. Вернуться в главное меню");
 
-                int choice = GetIntPositiveDigit(@"^[1-4]$");
+                int choice = GetIntPositiveDigit(@"^[1-4]$" , "Введена не существующая операция. Введите заново. ");
 
                 switch (choice)
                 {
                     case 1:
-                        AddPublisher();
+                        AddPublisher(publishers);
                         break;
                     case 2:
-                        DeletePublisher();
+                        DeletePublisher(publishers);
                         break;
                     case 3:
-                        UpdatePublisher();
+                        UpdatePublisher(publishers);
                         break;
                     case 4:
                         return;
@@ -315,7 +323,7 @@ namespace TermPaper_PNPK
             }
         }
 
-        static void HandleAcquisitionMethods()
+        static void HandleAcquisitionMethods(AcquisitionMethod[] acquisitionMethod)
         {
             while (true)
             {
@@ -325,18 +333,18 @@ namespace TermPaper_PNPK
                 Console.WriteLine("3. Редактировать способ приобретения");
                 Console.WriteLine("4. Вернуться в главное меню");
 
-                int choice = GetIntPositiveDigit(@"^[1-4]$");
+                int choice = GetIntPositiveDigit(@"^[1-4]$" , "Введена не существующая операция. Введите заново. ");
 
                 switch (choice)
                 {
                     case 1:
-                        AddAcquisitionMethod();
+                        AddAcquisitionMethod(acquisitionMethod);
                         break;
                     case 2:
-                        DeleteAcquisitionMethod();
+                        DeleteAcquisitionMethod(acquisitionMethod);
                         break;
                     case 3:
-                        UpdateAcquisitionMethod();
+                        UpdateAcquisitionMethod(acquisitionMethod);
                         break;
                     case 4:
                         return;
@@ -347,18 +355,32 @@ namespace TermPaper_PNPK
             }
         }
 
-        public static string ReadString(string prompt)
+
+        static int GetIntPositiveDigit(string pattern, string promt)
         {
-            Console.Write(prompt);
-            return Console.ReadLine();
+            int value;
+
+            while (!int.TryParse(Console.ReadLine(), out value) || !(Regex.IsMatch(Convert.ToString(value), pattern)))
+            {
+                Console.WriteLine(promt);
+            }
+
+            return value;
         }
 
-        public static string ReadStringWithRegex(string prompt, string regexPattern, params string[] validValues)
+
+        static string ReadStringWithValidation(string prompt, string regexPattern, params string[] validValues)
         {
             while (true)
             {
                 Console.Write(prompt);
                 string input = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Console.WriteLine("Ошибка: поле не может быть пустым.");
+                    continue;
+                }
 
                 if (Regex.IsMatch(input, regexPattern))
                 {
@@ -378,78 +400,100 @@ namespace TermPaper_PNPK
             }
         }
 
-        public static int ReadIntWithRegex(string prompt, string regexPattern, int minValue, int maxValue)
+      
+
+
+
+        static string ReadNonEmptyString(string prompt, string regexPattern)
         {
             while (true)
             {
                 Console.Write(prompt);
                 string input = Console.ReadLine();
 
+                if (!string.IsNullOrWhiteSpace(input))
+                {
+                    return input;
+                }
                 if (Regex.IsMatch(input, regexPattern))
                 {
-                    int number = int.Parse(input);
-                    if (number >= minValue && number <= maxValue)
-                    {
-                        return number;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Ошибка: число должно быть в диапазоне от {minValue} до {maxValue}.");
-                    }
+                    return input;
                 }
+
                 else
                 {
-                    Console.WriteLine("Ошибка: введите корректное значение.");
+                    Console.WriteLine("Ошибка: поле не может быть пустым.");
                 }
             }
         }
 
-        public static decimal ReadDecimal(string prompt)
+
+        static double ReadDouble(string prompt)
         {
             while (true)
             {
                 Console.Write(prompt);
-                if (decimal.TryParse(Console.ReadLine(), out decimal result))
+                if (double.TryParse(Console.ReadLine(), out double result) && result > 0)
+                { 
                     return result;
+                }
+
                 Console.WriteLine("Ошибка ввода. Пожалуйста, введите число.");
             }
         }
 
-        public static bool Confirm(string prompt)
+        static bool Confirm(string prompt)
         {
-            Console.Write($"{prompt} (да/нет): ");
-            string input = Console.ReadLine().ToLower();
-            return input == "да" || input == "yes";
+            while (true)
+            {
+                Console.Write($"{prompt} (да/нет): ");
+                string input = Console.ReadLine().ToLower();
+
+                if (input == "да" || input == "нет")
+                {
+                    return input == "да";
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка: введите 'да' или 'нет'.");
+                }
+            }
         }
 
-      
+
 
         static void AddBook(Book[] books, Genre[] genres, AcquisitionMethod[] acquisitionMethods)
         {
-            string author = ReadString("Автор: ");
+            string author = ReadNonEmptyString("Автор: ", @"^[А-ЯЁ][а-яё]+\s[А-ЯЁ]\.\s[А-ЯЁ]\.$");
 
-            string title = ReadString("Название: ");
+            string title = ReadNonEmptyString("Название: ", @"^[А-ЯЁA-Za-z0-9\s-]+$");
 
             Console.WriteLine("Список жанров:");
             foreach (var genr in genres)
             {
-                Console.WriteLine(genr.genreName);
+                Console.WriteLine(" - " + genr.genreName);
             }
-            string genre = ReadStringWithRegex("Жанр: ", @"^[A-ZА-Я][a-zа-я]*$", genres.Select(g => g.genreName).ToArray());
+            string genre = ReadStringWithValidation("Жанр: ", @"^[A-Za-zА-Яа-я]+([\s-][A-Za-zА-Яа-я]+)*$", genres.Select(g => g.genreName).ToArray());
 
-            string publisher = ReadStringWithRegex("Издательство: ", @"^[A-ZА-Я][a-zа-я]*$");
+            string publisher = ReadStringWithValidation("Издательство: ", @"^[A-Za-zА-Яа-я]+([\s-][A-Za-zА-Яа-я]+)*$");
 
-            int year = ReadIntWithRegex("Год издания: ", @"^\d{4}$", 1850, 2024);
 
-            int volumeCount = ReadIntWithRegex("Количество томов: ", @"^\d+$", 1, 100);
+
+            TextOutput("Год издания: ");
+            int year = GetIntPositiveDigit(@"^(18[5-9]\d|19\d\d|20[01]\d|202[0-4])$", "Введен недопустимый год. Введите заново.");
+
+            TextOutput("Количество томов: ");
+            int volumeCount = GetIntPositiveDigit(@"^([1-9]|[1-9][0-9]|100)$", "Введено недопустимое количество томов. Введите заново. ");
+
+            ;
 
 
             Console.WriteLine("Список способов приобретения:");
             foreach (var method in acquisitionMethods)
             {
-                Console.WriteLine(method.acquisitionMethodName);
+                Console.WriteLine(" - "+method.acquisitionMethodName);
             }
-            string acquisitionMethod = ReadStringWithRegex("Способ приобретения: ", @"^[A-ZА-Я][a-zа-я]*$");
+            string acquisitionMethod = ReadStringWithValidation("Способ приобретения: ", @"^[A-Za-zА-Яа-я]+([\s-][A-Za-zА-Яа-я]+)*$");
             if (!acquisitionMethods.Any(m => m.acquisitionMethodName == acquisitionMethod))
             {
                 Array.Resize(ref acquisitionMethods, acquisitionMethods.Length + 1);
@@ -457,14 +501,14 @@ namespace TermPaper_PNPK
             }
 
 
-            decimal price = ReadDecimal("Цена: ");
+            double price = ReadDouble("Цена: ");
 
-            string readerFullName = ReadString("ФИО читателя: ");
+            string readerFullName = ReadNonEmptyString("ФИО читателя: ", @"^[A-ZА-Я][a-zа-я]*([\s-][A-ZА-Я][a-zа-я]*)*$");
 
-            string notes = ReadString("Примечания: ");
+            string notes = ReadNonEmptyString ("Примечания: ", @"^[А-ЯЁA-Za-z0-9\s-]+$");
 
 
-            string uniqueId = GenerateUniqueId(books, title, year);
+            string uniqueId = GenerateUniqueId(books, title, author);
 
 
             Book newBook = new Book
@@ -474,39 +518,40 @@ namespace TermPaper_PNPK
                 title = title,
                 genre = genre,
                 publisher = publisher,
-                year = year,
-                volumeCount = volumeCount,
+                year = Convert.ToString(year),
+                volumeCount = Convert.ToString(volumeCount),
                 acquisitionMethod = acquisitionMethod,
-                price = price,
+                price = Convert.ToString(price),
                 readerFullName = readerFullName,
                 notes = notes
             };
 
-            int bookCount = books.Length;
+           
+            Array.Resize(ref books, books.Length + 1);
+            books[books.Length - 1] = newBook; 
 
-            books[bookCount] = newBook;
-            bookCount++;
-
-            Console.WriteLine("Книга успешно добавлена.");
 
             if (Confirm("Сохранить изменения?"))
             {
-                SaveBooks(books.Take(bookCount).ToArray());
+                SaveBooks(books);
                 SaveAcquisitionMethods(acquisitionMethods);
             }
+
+            
         }
 
-        static string GenerateUniqueId(Book[] books, string title, int year)
+        static string GenerateUniqueId(Book[] books, string title, string author)
         {
-            // Удаление пробелов и специальных символов из названия книги
-            string cleanedTitle = Regex.Replace(title, @"[^a-zA-Z0-9]", "");
-            string id = $"{cleanedTitle}_{year}";
+            // Удаление пробелов и специальных символов из названия книги и автора
+            string cleanedTitle = Regex.Replace(title, @"[^а-яА-Я0-9]", "");
+            string cleanedAuthor = Regex.Replace(author, @"[^а-яА-Я0-9]", "");
+            string id = $"ID_{cleanedTitle}_{cleanedAuthor}";
 
             // Проверка на уникальность ID
             int counter = 1;
             while (books.Any(b => b.bookId == id))
             {
-                id = $"{cleanedTitle}_{year}_{counter}";
+                id = $"ID_{cleanedTitle}_{cleanedAuthor}_{counter}";
                 counter++;
             }
 
@@ -526,85 +571,164 @@ namespace TermPaper_PNPK
             Console.WriteLine("Редактирование книги...");
         }
 
-        static void AddGenre()
+
+        static bool GenreExists(Genre[] genres, string genreName)
         {
-            // Логика добавления жанра
-            Console.WriteLine("Добавление жанра...");
+            if (genres.Any(g => g.genreName.Equals(genreName, StringComparison.OrdinalIgnoreCase)))
+            {
+                Console.WriteLine("Такой жанр уже существует. Пожалуйста, введите другой жанр.");
+                return true;
+            }
+            return false;
         }
 
-        static void DeleteGenre()
+        static bool PublisherExists(Publisher[] publisher, string publisherName)
+        {
+            if (publisher.Any(g => g.publisherName.Equals(publisherName, StringComparison.OrdinalIgnoreCase)))
+            {
+                Console.WriteLine("Такой издатель уже существует. Пожалуйста, введите другого издателя.");
+                return true;
+            }
+            return false;
+        }
+
+        static bool AcquisitionMethodExists(AcquisitionMethod[] acquisitionMethod, string acquisitionMethodName)
+        {
+            if (acquisitionMethod.Any(g => g.acquisitionMethodName.Equals(acquisitionMethodName, StringComparison.OrdinalIgnoreCase)))
+            {
+                Console.WriteLine("Такой способ приобретения уже существует. Пожалуйста, введите другой способ приобретения.");
+                return true;
+            }
+            return false;
+        }
+
+
+        static void AddGenre(Genre[] genres)
+        {
+            string genreName;
+
+
+            do
+            {
+                genreName = ReadNonEmptyString("Название жанра ", @"^[A-ZА-Я][a-zа-я]*$"); ;
+            } while (GenreExists(genres, genreName));
+
+            if (Confirm("Сохранить изменения?"))
+            {
+                Genre newGenre = new Genre { genreName = genreName };
+                Genre[] updatedGenres = new Genre[genres.Length + 1];
+
+                // Копируем старые жанры в новый массив
+                for (int i = 0; i < genres.Length; i++)
+                {
+                    updatedGenres[i] = genres[i];
+                }
+
+                // Добавляем новый жанр в конец массива
+                updatedGenres[genres.Length] = newGenre;
+
+                Console.WriteLine($"Жанр '{genreName}' добавлен.");
+                SaveGenres(updatedGenres);
+
+
+            }
+        }
+
+        static void DeleteGenre(Genre[] genres)
         {
             // Логика удаления жанра
             Console.WriteLine("Удаление жанра...");
         }
 
-        static void UpdateGenre()
+        static void UpdateGenre(Genre[] genres)
         {
             // Логика редактирования жанра
             Console.WriteLine("Редактирование жанра...");
         }
 
-        static void AddPublisher()
+        static void AddPublisher(Publisher[] publishers)
         {
-            // Логика добавления издательства
-            Console.WriteLine("Добавление издательства...");
+            string publisherName;
+
+            do
+            {
+                publisherName = ReadNonEmptyString("Название издательства: ", @"^[A-ZА-Я][a-zа-я]*([s-][A-ZА-Я][a-zа-я]*)*$");
+            } while (PublisherExists(publishers, publisherName)); // Предполагается, что у вас есть метод PublisherExists
+
+            if (Confirm("Сохранить изменения?"))
+            {
+                Publisher newPublisher = new Publisher { publisherName = publisherName };
+                Publisher[] updatedPublishers = new Publisher[publishers.Length + 1];
+
+                // Копируем старые издательства в новый массив
+                for (int i = 0; i < publishers.Length; i++)
+                {
+                    updatedPublishers[i] = publishers[i];
+                }
+
+                // Добавляем новое издательство в конец массива
+                updatedPublishers[publishers.Length] = newPublisher;
+
+                Console.WriteLine($"Издательство '{publisherName}' добавлено.");
+                SavePublishers(updatedPublishers); // Предполагается, что у вас есть метод SavePublishers
+            }
         }
 
-        static void DeletePublisher()
+        static void DeletePublisher(Publisher[] publishers)
         {
             // Логика удаления издательства
             Console.WriteLine("Удаление издательства...");
         }
 
-        static void UpdatePublisher()
+        static void UpdatePublisher(Publisher[] publishers)
         {
             // Логика редактирования издательства
             Console.WriteLine("Редактирование издательства...");
         }
 
-        static void AddAcquisitionMethod()
+        static void AddAcquisitionMethod(AcquisitionMethod[] acquisitionMethods)
         {
-            // Логика добавления способа приобретения
-            Console.WriteLine("Добавление способа приобретения...");
+            string methodName;
+
+            do
+            {
+                methodName = ReadNonEmptyString("Название способа приобретения: ", @"^[A-ZА-Я][a-zа-я]*([s-][A-ZА-Я][a-zа-я]*)*$");
+            } while (AcquisitionMethodExists(acquisitionMethods, methodName)); // Предполагается, что у вас есть метод AcquisitionMethodExists
+
+            if (Confirm("Сохранить изменения?"))
+            {
+                AcquisitionMethod newMethod = new AcquisitionMethod { acquisitionMethodName = methodName };
+                AcquisitionMethod[] updatedMethods = new AcquisitionMethod[acquisitionMethods.Length + 1];
+
+                // Копируем старые методы приобретения в новый массив
+                for (int i = 0; i < acquisitionMethods.Length; i++)
+                {
+                    updatedMethods[i] = acquisitionMethods[i];
+                }
+
+                // Добавляем новый метод приобретения в конец массива
+                updatedMethods[acquisitionMethods.Length] = newMethod;
+
+                Console.WriteLine($"Способ приобретения '{methodName}' добавлен.");
+                SaveAcquisitionMethods(updatedMethods); // Предполагается, что у вас есть метод SaveAcquisitionMethods
+            }
         }
 
-        static void DeleteAcquisitionMethod()
+        static void DeleteAcquisitionMethod(AcquisitionMethod[] acquisitionMethod)
         {
             // Логика удаления способа приобретения
             Console.WriteLine("Удаление способа приобретения...");
         }
 
-        static void UpdateAcquisitionMethod()
+        static void UpdateAcquisitionMethod(AcquisitionMethod[] acquisitionMethod)
         {
             // Логика редактирования способа приобретения
             Console.WriteLine("Редактирование способа приобретения...");
         }
 
 
-        /*static int GetIntPositiveDigit()
-        {
-            int value;
-
-            while (!int.TryParse(Console.ReadLine(), out value) || value < 1 || value > 6)
-            {
-                Console.WriteLine("Введена не существующая операция. Введите заново. ");
-            }
-
-            return value;
-        }
-        */
-        static int GetIntPositiveDigit(string pattern)
-        {
-            int value;
-
-            while (!int.TryParse(Console.ReadLine(), out value) || !(Regex.IsMatch(Convert.ToString(value), pattern)))
-            {
-                Console.WriteLine("Введена не существующая операция. Введите заново. ");
-            }
-
-            return value;
-        }
-
+       
+     
 
        
 
