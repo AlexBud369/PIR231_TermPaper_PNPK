@@ -17,15 +17,17 @@ namespace TermPaper_PNPK
         private const string PublishersFilePath = "publishers.txt";
         private const string AcquisitionMethodsFilePath = "acquisition_methods.txt";
 
+        /// <summary>
+        /// Основной метод программы, который запускает меню.
+        /// </summary>
         static void Main(string[] args)
         {
-            
             Menu();
+        }
 
-    }
-
-  
-
+        /// <summary>
+        /// Структура, представляющая книгу с различными атрибутами.
+        /// </summary>
         public struct Book
         {
             public string bookId;
@@ -41,16 +43,25 @@ namespace TermPaper_PNPK
             public string notes;
         }
 
+        /// <summary>
+        /// Структура, представляющая жанр.
+        /// </summary>
         public struct Genre
         {
             public string genreName;
         }
 
+        /// <summary>
+        /// Структура, представляющая издательство.
+        /// </summary>
         public struct Publisher
         {
             public string publisherName;
         }
 
+        /// <summary>
+        /// Структура, представляющая метод приобретения книги.
+        /// </summary>
         public struct AcquisitionMethod
         {
             public string acquisitionMethodName;
@@ -58,8 +69,11 @@ namespace TermPaper_PNPK
 
 
 
-
-         static Book[] LoadBooks()
+        /// <summary>
+        /// Загружает книги из файла и возвращает массив структур Book.
+        /// </summary>
+        /// <returns>Массив структур Book.</returns>
+        static Book[] LoadBooks()
         {
             string[] lines = File.ReadAllLines(BooksFilePath);
             Book[] books = new Book[lines.Length];
@@ -84,6 +98,10 @@ namespace TermPaper_PNPK
             return books;
         }
 
+        /// <summary>
+        /// Сохраняет массив книг в файл.
+        /// </summary>
+        /// <param name="books">Массив структур Book для сохранения.</param>
         static void SaveBooks(Book[] books)
         {
             using (StreamWriter writer = new StreamWriter(BooksFilePath))
@@ -95,6 +113,10 @@ namespace TermPaper_PNPK
             }
         }
 
+        /// <summary>
+        /// Загружает жанры из файла и возвращает массив структур Genre.
+        /// </summary>
+        /// <returns>Массив структур Genre.</returns>
         static Genre[] LoadGenres()
         {
             string[] lines = File.ReadAllLines(GenresFilePath);
@@ -106,11 +128,19 @@ namespace TermPaper_PNPK
             return genres;
         }
 
+        /// <summary>
+        /// Сохраняет массив жанров в файл.
+        /// </summary>
+        /// <param name="genres">Массив структур Genre для сохранения.</param>
         static void SaveGenres(Genre[] genres)
         {
             File.WriteAllLines(GenresFilePath, genres.Select(g => g.genreName));
         }
 
+        /// <summary>
+        /// Загружает издательства из файла и возвращает массив структур Publisher.
+        /// </summary>
+        /// <returns>Массив структур Publisher.</returns>
         static Publisher[] LoadPublishers()
         {
             string[] lines = File.ReadAllLines(PublishersFilePath);
@@ -122,6 +152,10 @@ namespace TermPaper_PNPK
             return publishers;
         }
 
+        /// <summary>
+        /// Сохраняет массив издательств в файл.
+        /// </summary>
+        /// <param name="publishers">Массив структур Publisher для сохранения.</param>
         static void SavePublishers(Publisher[] publishers)
         {
             using (StreamWriter writer = new StreamWriter(PublishersFilePath))
@@ -133,6 +167,10 @@ namespace TermPaper_PNPK
             }
         }
 
+        /// <summary>
+        /// Загружает методы приобретения из файла и возвращает массив структур AcquisitionMethod.
+        /// </summary>
+        /// <returns>Массив структур AcquisitionMethod.</returns>
         static AcquisitionMethod[] LoadAcquisitionMethods()
         {
             string[] lines = File.ReadAllLines(AcquisitionMethodsFilePath);
@@ -144,6 +182,10 @@ namespace TermPaper_PNPK
             return acquisitionMethods;
         }
 
+        /// <summary>
+        /// Сохраняет массив методов приобретения в файл.
+        /// </summary>
+        /// <param name="acquisitionMethods">Массив структур AcquisitionMethod для сохранения.</param>
         static void SaveAcquisitionMethods(AcquisitionMethod[] acquisitionMethods)
         {
             using (StreamWriter writer = new StreamWriter(AcquisitionMethodsFilePath))
@@ -154,24 +196,35 @@ namespace TermPaper_PNPK
                 }
             }
         }
-    
 
+        /// <summary>
+        /// Завершает выполнение программы.
+        /// </summary>
         static void ProgramExitMethod()
         {
             Environment.Exit(0);
         }
 
-
+        /// <summary>
+        /// Выводит текст в консоль.
+        /// </summary>
+        /// <param name="text">Текст для вывода.</param>
         static void TextOutput(string text)        
         {
             Console.WriteLine(text);
         }
 
+        /// <summary>
+        /// Очищает консоль.
+        /// </summary>
         static void ClearMenu() 
         { 
             Console.Clear();
         }
 
+        /// <summary>
+        /// Выводит сообщение и ожидает нажатия любой клавиши для возврата в главное меню.
+        /// </summary>
         static void ReturnToMenu()
         {
             TextOutput("Для возвращения на главное меню нажмите любую кнопку");
@@ -179,6 +232,10 @@ namespace TermPaper_PNPK
             Console.Clear();
             Menu();
         }
+
+        /// <summary>
+        /// Выводит текст главного меню.
+        /// </summary>
         static void MenuTextOutput()
         {
             TextOutput("Выберите с каким элементом будете взаимодействовать");
@@ -190,6 +247,9 @@ namespace TermPaper_PNPK
             
         }
 
+        /// <summary>
+        /// Основное меню программы, где пользователь выбирает, с каким элементом будет взаимодействовать.
+        /// </summary>
         static void Menu()
         {
             MenuTextOutput();
@@ -226,6 +286,9 @@ namespace TermPaper_PNPK
             }
         }
 
+        /// <summary>
+        /// Выводит текст меню для работы с книгами.
+        /// </summary>
         static void HandleBooksTextOutput()
         {
             TextOutput("Выберите действие для книг:");
@@ -238,6 +301,13 @@ namespace TermPaper_PNPK
             TextOutput("7. Вернуться в главное меню");
         }
 
+        /// <summary>
+        /// Обрабатывает действия пользователя с книгами.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
+        /// <param name="genres">Массив жанров.</param>
+        /// <param name="acquisitionMethods">Массив методов приобретения.</param>
+        /// <param name="publishers">Массив издательств.</param>
         static void HandleBooks(Book[] books, Genre[] genres, AcquisitionMethod[] acequisitationMethods, Publisher[] publishers)
         {
             while (true)
@@ -292,14 +362,21 @@ namespace TermPaper_PNPK
                 }
             }
         }
+
+        /// <summary>
+        /// Выводит текст меню для генерации отчетов.
+        /// </summary>
         static void HandleReportsTextOutput()
         {
             TextOutput("Нажмите 1 для генерации отчета по жанрам и издательствам");
             TextOutput("Нажмите 2 для генерации отчета по читателям и книгам");
             TextOutput("Нажмите 3 для генерации отчета по жанрам и книгам");
         }
-        
 
+        /// <summary>
+        /// Обрабатывает действия пользователя по генерации отчетов.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
         static void HandleReports(Book[] books)
         {
             while (true)
@@ -335,6 +412,9 @@ namespace TermPaper_PNPK
             }
         }
 
+        /// <summary>
+        /// Выводит текст меню для работы с жанрами.
+        /// </summary>
         static void HandleGenresTextOutput()
         {
             TextOutput("Выберите действие для жанров:");
@@ -344,6 +424,11 @@ namespace TermPaper_PNPK
             TextOutput("4. Вернуться в главное меню");
         }
 
+        /// <summary>
+        /// Обрабатывает действия пользователя с жанрами.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
+        /// <param name="genres">Массив жанров.</param>
         static void HandleGenres(Book[] books, Genre[] genres)
         {
             while (true)
@@ -389,7 +474,9 @@ namespace TermPaper_PNPK
                 }
             }
         }
-
+        /// <summary>
+        /// Выводит текст меню для работы с издательствами.
+        /// </summary>
         static void HandlePublishersTextOutput()
         {
             TextOutput("Выберите действие для издательств:");
@@ -399,6 +486,11 @@ namespace TermPaper_PNPK
             TextOutput("4. Вернуться в главное меню");
         }
 
+        /// <summary>
+        /// Обрабатывает действия пользователя с издательствами.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
+        /// <param name="publishers">Массив издательств.</param>
         static void HandlePublishers(Book[] books, Publisher[] publishers)
         {
             while (true)
@@ -442,6 +534,9 @@ namespace TermPaper_PNPK
             }
         }
 
+        /// <summary>
+        /// Выводит текст меню для работы со способами приобретения.
+        /// </summary>
         static void HandleAcquisitionMethodsTextOutput()
         {
             TextOutput("Выберите действие для способов приобретения:");
@@ -451,6 +546,11 @@ namespace TermPaper_PNPK
             TextOutput("4. Вернуться в главное меню");
         }
 
+        /// <summary>
+        /// Обрабатывает действия пользователя со способами приобретения.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
+        /// <param name="acquisitionMethods">Массив способов приобретения.</param>
         static void HandleAcquisitionMethods(Book[] books, AcquisitionMethod[] acquisitionMethods)
         {
             while (true)
@@ -495,7 +595,12 @@ namespace TermPaper_PNPK
             }
         }
 
-
+        /// <summary>
+        /// Получает положительное целое число, соответствующее регулярному выражению.
+        /// </summary>
+        /// <param name="pattern">Регулярное выражение для проверки.</param>
+        /// <param name="prompt">Сообщение для пользователя.</param>
+        /// <returns>Положительное целое число.</returns>
         static int GetIntPositiveDigit(string pattern, string promt)
         {
             int value;
@@ -507,6 +612,12 @@ namespace TermPaper_PNPK
             return value;
         }
 
+        /// <summary>
+        /// Получает строку, соответствующую регулярному выражению.
+        /// </summary>
+        /// <param name="prompt">Сообщение для пользователя.</param>
+        /// <param name="regexPattern">Регулярное выражение для проверки.</param>
+        /// <returns>Строка, соответствующая регулярному выражению.</returns>
         static string ReadStringWithValidation(string prompt, string regexPattern)
         {
             while (true)
@@ -531,6 +642,12 @@ namespace TermPaper_PNPK
             }
         }
 
+        /// <summary>
+        /// Получает непустую строку, соответствующую регулярному выражению.
+        /// </summary>
+        /// <param name="prompt">Сообщение для пользователя.</param>
+        /// <param name="regexPattern">Регулярное выражение для проверки.</param>
+        /// <returns>Непустая строка, соответствующая регулярному выражению.</returns>
         static string ReadNonEmptyString(string prompt, string regexPattern)
         {
             while (true)
@@ -553,7 +670,11 @@ namespace TermPaper_PNPK
             }
         }
 
-
+        /// <summary>
+        /// Получает положительное число с плавающей запятой.
+        /// </summary>
+        /// <param name="prompt">Сообщение для пользователя.</param>
+        /// <returns>Положительное число с плавающей запятой.</returns>
         static double ReadDouble(string prompt)
         {
             while (true)
@@ -568,6 +689,11 @@ namespace TermPaper_PNPK
             }
         }
 
+        /// <summary>
+        /// Запрашивает подтверждение у пользователя.
+        /// </summary>
+        /// <param name="prompt">Сообщение для пользователя.</param>
+        /// <returns>True, если пользователь подтвердил, иначе False.</returns>
         static bool Confirm(string prompt)
         {
             while (true)
@@ -586,6 +712,13 @@ namespace TermPaper_PNPK
             }
         }
 
+        /// <summary>
+        /// Добавляет новую книгу в массив книг.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
+        /// <param name="genres">Массив жанров.</param>
+        /// <param name="acquisitionMethods">Массив способов приобретения.</param>
+        /// <returns>Обновленный массив книг.</returns>
         static Book[] AddBook(Book[] books, Genre[] genres, AcquisitionMethod[] acquisitionMethods)
         {
             string author = ReadNonEmptyString("Автор: ", @"^[А-ЯЁ][а-яё]+\s[А-ЯЁ]\.\s[А-ЯЁ]\.$");
@@ -646,22 +779,33 @@ namespace TermPaper_PNPK
             return books;
         }
 
+        /// <summary>
+        /// Генерирует уникальный ID для новой книги.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
+        /// <param name="title">Название книги.</param>
+        /// <param name="author">Автор книги.</param>
+        /// <returns>Уникальный ID книги.</returns>
         static string GenerateUniqueId(Book[] books, string title, string author)
         {
             string cleanedTitle = Regex.Replace(title, @"\s+", "");
             string cleanedAuthor = Regex.Replace(author, @"\s+", "");
-            string id = $"ID_{cleanedTitle}_{cleanedAuthor}";
-  
+            string baseId = $"ID_{cleanedTitle}_{cleanedAuthor}";
+
+            // Проверка на наличие свободных номеров
             int counter = 1;
-            while (books.Any(b => b.bookId == id))
+            while (books.Any(b => b.bookId == $"{baseId}_{counter}"))
             {
-                id = $"ID_{cleanedTitle}_{cleanedAuthor}_{counter}";
                 counter++;
             }
 
-            return id;
+            return $"{baseId}_{counter}";
         }
 
+        /// <summary>
+        /// Выводит список книг.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
         static void BookListOutput(Book[] books)
         {
             foreach (Book book in books)
@@ -681,6 +825,11 @@ namespace TermPaper_PNPK
             }
         }
 
+        /// <summary>
+        /// Удаляет книгу из массива книг.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
+        /// <returns>Обновленный массив книг.</returns>
         static Book[] DeleteBook(Book[] books)
         {
             TextOutput("Список книг:");
@@ -699,11 +848,25 @@ namespace TermPaper_PNPK
             return updatedBooks;
         }
 
+        /// <summary>
+        /// Проверяет, существует ли книга с указанным ID.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
+        /// <param name="bookId">ID книги для проверки.</param>
+        /// <returns>True, если книга существует, иначе False.</returns>
         static bool BookExists(Book[] books, string bookId)
         {
             return books.Any(book => book.bookId == bookId);
         }
 
+        /// <summary>
+        /// Обновляет информацию о книге.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
+        /// <param name="genres">Массив жанров.</param>
+        /// <param name="acquisitionMethods">Массив способов приобретения.</param>
+        /// <param name="publishers">Массив издательств.</param>
+        /// <returns>Обновленный массив книг.</returns>
         static Book[] UpdateBook(Book[] books, Genre[] genres, AcquisitionMethod[] acquisitionMethods, Publisher[] publishers)
         {
             Console.WriteLine("Список книг:");
@@ -782,6 +945,13 @@ namespace TermPaper_PNPK
             return books;
         }
 
+        /// <summary>
+        /// Получает непустую строку или возвращает значение по умолчанию, если пользователь нажал Enter.
+        /// </summary>
+        /// <param name="prompt">Сообщение для пользователя.</param>
+        /// <param name="pattern">Регулярное выражение для проверки.</param>
+        /// <param name="defaultValue">Значение по умолчанию.</param>
+        /// <returns>Введенная строка или значение по умолчанию.</returns>
         static string ReadNonEmptyStringOrSkip(string prompt, string pattern, string defaultValue)
         {
             string input;
@@ -798,6 +968,14 @@ namespace TermPaper_PNPK
             return input;
         }
 
+        /// <summary>
+        /// Получает строку, соответствующую регулярному выражению, или возвращает значение по умолчанию, если пользователь нажал Enter.
+        /// </summary>
+        /// <param name="prompt">Сообщение для пользователя.</param>
+        /// <param name="pattern">Регулярное выражение для проверки.</param>
+        /// <param name="validValues">Допустимые значения.</param>
+        /// <param name="defaultValue">Значение по умолчанию.</param>
+        /// <returns>Введенная строка или значение по умолчанию.</returns>
         static string ReadStringWithValidationOrSkip(string prompt, string pattern, string[] validValues, string defaultValue)
         {
             string input;
@@ -814,6 +992,11 @@ namespace TermPaper_PNPK
             return input;
         }
 
+        /// <summary>
+        /// Сортирует книги по выбранным полям.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
+        /// <returns>Отсортированный массив книг.</returns>
         static Book[] SortBooks(Book[] books)
         {
             TextOutput("Выберите поля для сортировки (можно выбрать несколько, введите номера полей через запятую):");
@@ -875,6 +1058,12 @@ namespace TermPaper_PNPK
             return sortedBooks.ToArray();
         }
 
+        /// <summary>
+        /// Сортирует книги по указанному полю.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
+        /// <param name="field">Номер поля для сортировки.</param>
+        /// <returns>Отсортированный массив книг.</returns>
         static IOrderedEnumerable<Book> SortBooksByField(IEnumerable<Book> books, int field)
         {
             switch (field)
@@ -898,6 +1087,12 @@ namespace TermPaper_PNPK
             }
         }
 
+        /// <summary>
+        /// Дополнительно сортирует уже отсортированный массив книг по указанному полю.
+        /// </summary>
+        /// <param name="books">Отсортированный массив книг.</param>
+        /// <param name="field">Номер поля для сортировки.</param>
+        /// <returns>Отсортированный массив книг.</returns>
         static IOrderedEnumerable<Book> SortBooksByField(IOrderedEnumerable<Book> books, int field)
         {
             switch (field)
@@ -921,7 +1116,10 @@ namespace TermPaper_PNPK
             }
         }
 
-
+        /// <summary>
+        /// Ищет книги по заданным критериям.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
         static void SearchBooks(Book[] books)
         {
             TextOutput("Введите данные для поиска (если не хотите искать по какому-то полю, нажмите Enter):");
@@ -951,12 +1149,23 @@ namespace TermPaper_PNPK
             }
         }
 
+        /// <summary>
+        /// Получает строку от пользователя или возвращает пустую строку, если пользователь нажал Enter.
+        /// </summary>
+        /// <param name="prompt">Сообщение для пользователя.</param>
+        /// <returns>Введенная строка или пустая строка.</returns>
         static string ReadStringOrSkip(string prompt)
         {
             Console.Write(prompt);
             return Console.ReadLine();
         }
 
+        /// <summary>
+        /// Проверяет, существует ли жанр с указанным именем.
+        /// </summary>
+        /// <param name="genres">Массив жанров.</param>
+        /// <param name="genreName">Имя жанра для проверки.</param>
+        /// <returns>True, если жанр существует, иначе False.</returns>
         static bool GenreExists(Genre[] genres, string genreName)
         {
             if (genres.Any(g => g.genreName.Equals(genreName, StringComparison.OrdinalIgnoreCase)))
@@ -966,6 +1175,12 @@ namespace TermPaper_PNPK
             return false;
         }
 
+        /// <summary>
+        /// Проверяет, существует ли издательство с указанным именем.
+        /// </summary>
+        /// <param name="publishers">Массив издательств.</param>
+        /// <param name="publisherName">Имя издательства для проверки.</param>
+        /// <returns>True, если издательство существует, иначе False.</returns>
         static bool PublisherExists(Publisher[] publisher, string publisherName)
         {
             if (publisher.Any(g => g.publisherName.Equals(publisherName, StringComparison.OrdinalIgnoreCase)))
@@ -975,6 +1190,12 @@ namespace TermPaper_PNPK
             return false;
         }
 
+        /// <summary>
+        /// Проверяет, существует ли способ приобретения с указанным именем.
+        /// </summary>
+        /// <param name="acquisitionMethods">Массив способов приобретения.</param>
+        /// <param name="acquisitionMethodName">Имя способа приобретения для проверки.</param>
+        /// <returns>True, если способ приобретения существует, иначе False.</returns>
         static bool AcquisitionMethodExists(AcquisitionMethod[] acquisitionMethod, string acquisitionMethodName)
         {
             if (acquisitionMethod.Any(g => g.acquisitionMethodName.Equals(acquisitionMethodName, StringComparison.OrdinalIgnoreCase)))
@@ -984,7 +1205,11 @@ namespace TermPaper_PNPK
             return false;
         }
 
-
+        /// <summary>
+        /// Добавляет новый жанр в массив жанров.
+        /// </summary>
+        /// <param name="genres">Массив жанров.</param>
+        /// <returns>Обновленный массив жанров.</returns>
         static Genre[] AddGenre(Genre[] genres)
         {
             string genreName;
@@ -1009,6 +1234,12 @@ namespace TermPaper_PNPK
             return updatedGenres;
         }
 
+        /// <summary>
+        /// Удаляет жанр из массива жанров.
+        /// </summary>
+        /// <param name="genres">Массив жанров.</param>
+        /// <param name="books">Массив книг.</param>
+        /// <returns>Обновленный массив жанров.</returns>
         static Genre[] DeleteGenre(Genre[] genres, Book[] books)
         {
             Console.WriteLine("Список жанров:");
@@ -1038,6 +1269,12 @@ namespace TermPaper_PNPK
             return updatedGenres;
         }
 
+        /// <summary>
+        /// Обновляет информацию о жанре.
+        /// </summary>
+        /// <param name="genres">Массив жанров.</param>
+        /// <param name="books">Массив книг.</param>
+        /// <returns>Обновленный массив жанров.</returns>
         static Genre[] UpdateGenre(Genre[] genres, Book[] books)
         {
             Console.WriteLine("Список жанров:");
@@ -1080,6 +1317,11 @@ namespace TermPaper_PNPK
             return genres;
         }
 
+        /// <summary>
+        /// Добавляет новое издательство в массив издательств.
+        /// </summary>
+        /// <param name="publishers">Массив издательств.</param>
+        /// <returns>Обновленный массив издательств.</returns>
         static Publisher[] AddPublisher(Publisher[] publishers)
         {
             string publisherName;
@@ -1104,7 +1346,12 @@ namespace TermPaper_PNPK
             return updatedPublishers;
         }
 
-
+        /// <summary>
+        /// Удаляет издательство из массива издательств.
+        /// </summary>
+        /// <param name="publishers">Массив издательств.</param>
+        /// <param name="books">Массив книг.</param>
+        /// <returns>Обновленный массив издательств.</returns>
         static Publisher[] DeletePublisher(Publisher[] publishers, Book[] books)
         {
             Console.WriteLine("Список издателей:");
@@ -1134,6 +1381,12 @@ namespace TermPaper_PNPK
             return updatedPublishers;
         }
 
+        /// <summary>
+        /// Обновляет информацию об издательстве.
+        /// </summary>
+        /// <param name="publishers">Массив издательств.</param>
+        /// <param name="books">Массив книг.</param>
+        /// <returns>Обновленный массив издательств.</returns>
         static Publisher[] UpdatePublisher(Publisher[] publishers, Book[] books)
         {
             Console.WriteLine("Список издателей:");
@@ -1177,7 +1430,11 @@ namespace TermPaper_PNPK
         }
 
 
-
+        /// <summary>
+        /// Добавляет новый способ приобретения в массив способов приобретения.
+        /// </summary>
+        /// <param name="acquisitionMethods">Массив способов приобретения.</param>
+        /// <returns>Обновленный массив способов приобретения.</returns>
         static AcquisitionMethod[] AddAcquisitionMethod(AcquisitionMethod[] acquisitionMethods)
         {
             string methodName;
@@ -1201,6 +1458,13 @@ namespace TermPaper_PNPK
 
             return updatedMethods;
         }
+
+        /// <summary>
+        /// Удаляет способ приобретения из массива способов приобретения.
+        /// </summary>
+        /// <param name="acquisitionMethods">Массив способов приобретения.</param>
+        /// <param name="books">Массив книг.</param>
+        /// <returns>Обновленный массив способов приобретения.</returns>
         static AcquisitionMethod[] DeleteAcquisitionMethod(AcquisitionMethod[] acquisitionMethods, Book[] books)
         {
             Console.WriteLine("Список методов приобретения:");
@@ -1231,6 +1495,12 @@ namespace TermPaper_PNPK
             return updatedMethods;
         }
 
+        /// <summary>
+        /// Обновляет информацию о способе приобретения.
+        /// </summary>
+        /// <param name="acquisitionMethods">Массив способов приобретения.</param>
+        /// <param name="books">Массив книг.</param>
+        /// <returns>Обновленный массив способов приобретения.</returns>
         static AcquisitionMethod[] UpdateAcquisitionMethod(AcquisitionMethod[] acquisitionMethods, Book[] books)
         {
             Console.WriteLine("Список способов приобретения:");
@@ -1273,7 +1543,10 @@ namespace TermPaper_PNPK
             return acquisitionMethods;
         }
 
-
+        /// <summary>
+        /// Генерирует отчет по жанрам и издательствам.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
         static void GenerateGenrePublisherReport(Book[] books)
         {
             var genrePublisherCounts = books
@@ -1319,6 +1592,10 @@ namespace TermPaper_PNPK
             }
         }
 
+        /// <summary>
+        /// Генерирует отчет по читателям и книгам.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
         static void GeneratePersonBooksReport(Book[] books)
         {
             var personBooks = books
@@ -1341,9 +1618,12 @@ namespace TermPaper_PNPK
                     writer.WriteLine();
                 }
             }
-        
-    }
+        }
 
+        /// <summary>
+        /// Генерирует отчет по жанрам и книгам.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
         static void GenerateGenreBooksReport(Book[] books)
         {
             var genreBooks = books
@@ -1368,6 +1648,10 @@ namespace TermPaper_PNPK
             }
         }
 
+        /// <summary>
+        /// Выводит отчет по жанрам и издательствам в консоль.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
         static void PrintGenrePublisherReport(Book[] books)
         {
             var genrePublisherCounts = books
@@ -1410,6 +1694,10 @@ namespace TermPaper_PNPK
             }
         }
 
+        /// <summary>
+        /// Выводит отчет по читателям и книгам в консоль.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
         static void PrintPersonBooksReport(Book[] books)
         {
             var personBooks = books
@@ -1420,7 +1708,7 @@ namespace TermPaper_PNPK
             foreach (var group in personBooks)
             {
                 Console.WriteLine(group.Key);
-                Console.WriteLine("№ п/п\tАвтор\tНазвание");
+                Console.WriteLine("№ п/п\tАвтор\t\t\tНазвание");
                 int count = 1;
                 foreach (var book in group.OrderBy(b => b.author))
                 {
@@ -1431,6 +1719,10 @@ namespace TermPaper_PNPK
             }
         }
 
+        /// <summary>
+        /// Выводит отчет по жанрам и книгам в консоль.
+        /// </summary>
+        /// <param name="books">Массив книг.</param>
         static void PrintGenreBooksReport(Book[] books)
         {
             var genreBooks = books
@@ -1441,14 +1733,14 @@ namespace TermPaper_PNPK
             foreach (var group in genreBooks)
             {
                 Console.WriteLine(group.Key);
-                Console.WriteLine("№ п/п\tАвтор\tНазвание\tКоличество томов");
+                Console.WriteLine("№ п/п\tАвтор\t\t\tНазвание\t\tКоличество томов");
                 int count = 1;
                 foreach (var book in group.OrderBy(b => b.author))
                 {
                     Console.WriteLine($"{count}\t{book.author,-20}\t{book.title,-30}\t{book.volumeCount}");
                     count++;
                 }
-                Console.WriteLine(new string('-', 50));
+                Console.WriteLine(new string('-', 70));
             }
         }
 
